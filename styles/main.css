@@ -1,0 +1,263 @@
+/* =============================================
+   Design Tokens — CSS Custom Properties
+   ============================================= */
+:root {
+  /* Colors */
+  --color-bg:           #FFFFFF;
+  --color-surface:      #FFD1DC;
+  --color-accent:       #B76E79;
+  --color-text-primary: #3D2B2B;
+  --color-text-secondary: #5C4040;
+  --color-glass-bg:     rgba(255, 255, 255, 0.25);
+  --color-glass-border: rgba(183, 110, 121, 0.35);
+  --color-accent-hover: rgba(183, 110, 121, 0.15);
+  --color-accent-shadow: rgba(183, 110, 121, 0.18);
+  --color-accent-glow:  rgba(183, 110, 121, 0.5);
+  --color-accent-glow-hover: rgba(183, 110, 121, 0.75);
+  --color-sidebar-shadow: rgba(183, 110, 121, 0.12);
+  --color-vocab-row:    rgba(255, 209, 220, 0.4);
+
+  /* Typography */
+  --font-family:        'Quicksand', sans-serif;
+  --font-size-base:     16px;
+  --font-size-xs:       12px;
+  --font-size-sm:       14px;
+  --font-size-md:       18px;
+  --font-size-lg:       22px;
+  --font-size-xl:       28px;
+  --font-size-2xl:      36px;
+  --font-size-3xl:      48px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:    700;
+
+  /* Spacing — 8px grid */
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  32px;
+  --space-xl:  48px;
+  --space-2xl: 64px;
+
+  /* Border Radius */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-xl:   32px;
+
+  /* Layout */
+  --sidebar-width: 280px;
+}
+
+/* =============================================
+   Reset & Base
+   ============================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* =============================================
+   Dashboard Shell — Two-Column Grid
+   ============================================= */
+.dashboard {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+}
+
+/* =============================================
+   Sidebar
+   ============================================= */
+.sidebar {
+  background-color: var(--color-surface);
+  box-shadow: 4px 0 24px var(--color-sidebar-shadow);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: var(--space-md);
+}
+
+/* =============================================
+   Main Content
+   ============================================= */
+.main-content {
+  background-color: var(--color-bg);
+  padding: var(--space-xl) var(--space-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* =============================================
+   Floating Animation
+   ============================================= */
+@keyframes float-book-open {
+  0%, 100% { transform: rotate(-15deg) translateY(0px); }
+  50%       { transform: rotate(-15deg) translateY(-12px); }
+}
+
+@keyframes float-pencil {
+  0%, 100% { transform: rotate(20deg) translateY(0px); }
+  50%       { transform: rotate(20deg) translateY(-12px); }
+}
+
+@keyframes float-book-closed {
+  0%, 100% { transform: rotate(10deg) translateY(0px); }
+  50%       { transform: rotate(10deg) translateY(-12px); }
+}
+
+/* =============================================
+   Mobile Top Bar (hidden on desktop)
+   ============================================= */
+.mobile-topbar {
+  display: none;
+}
+
+/* =============================================
+   Hamburger Button
+   ============================================= */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
+}
+
+.hamburger:hover {
+  background: var(--color-accent-hover);
+}
+
+.hamburger__line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Hamburger open state — animate to X */
+.hamburger[aria-expanded="true"] .hamburger__line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] .hamburger__line:nth-child(2) {
+  opacity: 0;
+}
+.hamburger[aria-expanded="true"] .hamburger__line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =============================================
+   Responsive — 768px breakpoint
+   ============================================= */
+@media (max-width: 768px) {
+  /* Switch to single-column layout */
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  /* Show mobile top bar */
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-surface);
+    padding: var(--space-sm) var(--space-md);
+    box-shadow: 0 2px 12px var(--color-sidebar-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .mobile-topbar__title {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+  }
+
+  /* Sidebar becomes a collapsible dropdown panel */
+  .sidebar {
+    height: 0;
+    overflow: hidden;
+    position: static;
+    padding: 0;
+    box-shadow: none;
+    transition: height 0.3s ease, padding 0.3s ease;
+  }
+
+  .sidebar.sidebar--open {
+    height: auto;
+    padding: var(--space-sm) var(--space-md);
+    box-shadow: 0 4px 16px var(--color-sidebar-shadow);
+    overflow-y: auto;
+    max-height: 50vh;
+  }
+
+  /* Main content single-column, reduced padding */
+  .main-content {
+    padding: var(--space-md) var(--space-sm);
+    overflow: visible;
+  }
+
+  /* Hide floating icons on mobile to avoid clutter */
+  .floating-icons {
+    display: none;
+  }
+
+  /* Word card full width on mobile */
+  .word-card {
+    max-width: 100%;
+    padding: var(--space-md);
+  }
+
+  .word-card__word {
+    font-size: var(--font-size-2xl);
+  }
+
+  /* Vocab list stacks columns on mobile */
+  .vocab-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .vocab-row__meaning {
+    grid-column: 1 / -1;
+  }
+
+  /* Vocab section full width */
+  .vocab-section {
+    max-width: 100%;
+  }
+
+  /* Quiz view full width */
+  .quiz-view {
+    max-width: 100%;
+    padding: var(--space-md);
+  }
+}

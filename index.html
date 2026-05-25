@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Học tiếng Anh cho em bé 22 tuổi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Mobile top bar (visible only on small screens) -->
+    <div class="mobile-topbar" id="mobile-topbar">
+      <span class="mobile-topbar__title">Học tiếng Anh 🌸</span>
+      <button class="hamburger" id="hamburger-btn" aria-label="Mở danh sách chủ đề" aria-expanded="false" aria-controls="sidebar">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main-content" id="main-content">
+      <!-- Floating Decorative Icons -->
+      <div class="floating-icons" aria-hidden="true">
+        <!-- Open Book -->
+        <svg class="floating-icon floating-icon--book-open" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M40 16C40 16 24 10 10 14V62C24 58 40 64 40 64C40 64 56 58 70 62V14C56 10 40 16 40 16Z" fill="#FFD1DC" stroke="#B76E79" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="40" y1="16" x2="40" y2="64" stroke="#B76E79" stroke-width="2.5"/>
+          <line x1="18" y1="24" x2="36" y2="22" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="32" x2="36" y2="30" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="40" x2="36" y2="38" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="44" y1="22" x2="62" y2="24" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="44" y1="30" x2="62" y2="32" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="44" y1="38" x2="62" y2="40" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Pencil -->
+        <svg class="floating-icon floating-icon--pencil" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="22" y="8" width="16" height="38" rx="4" fill="#FFD1DC" stroke="#B76E79" stroke-width="2"/>
+          <polygon points="22,46 38,46 30,58" fill="#B76E79"/>
+          <rect x="22" y="8" width="16" height="10" rx="4" fill="#B76E79"/>
+          <line x1="30" y1="18" x2="30" y2="44" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+        </svg>
+
+        <!-- Closed Book -->
+        <svg class="floating-icon floating-icon--book-closed" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="10" width="38" height="50" rx="5" fill="#FFD1DC" stroke="#B76E79" stroke-width="2.5"/>
+          <rect x="14" y="10" width="8" height="50" rx="4" fill="#B76E79"/>
+          <line x1="26" y1="22" x2="48" y2="22" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="26" y1="30" x2="48" y2="30" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="26" y1="38" x2="40" y2="38" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M32 52 Q35 48 38 52" stroke="#B76E79" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- Word of the Day Card -->
+      <article class="word-card" id="word-card" aria-label="Word of the Day">
+        <span class="word-card__badge">Vocabulary</span>
+        <h2 class="word-card__word" id="card-word"></h2>
+        <p class="word-card__ipa" id="card-ipa"></p>
+        <span class="word-card__type" id="card-type"></span>
+        <p class="word-card__meaning" id="card-meaning"></p>
+        <button class="btn-quiz" id="btn-quiz" type="button">Start Quiz</button>
+      </article>
+
+      <!-- Vocabulary List View -->
+      <section class="vocab-section" id="vocab-section" aria-label="Vocabulary List">
+        <h2 class="vocab-section__title" id="vocab-section-title"></h2>
+        <div class="vocab-list" id="vocab-list"></div>
+      </section>
+
+      <!-- Quiz Placeholder View (hidden by default) -->
+      <div class="quiz-view" id="quiz-view" hidden>
+        <h2 class="quiz-view__title" id="quiz-view-title"></h2>
+        <p class="quiz-view__subtitle" id="quiz-view-subtitle"></p>
+        <button class="btn-quiz" id="btn-back-quiz" type="button">← Quay lại</button>
+      </div>
+    </main>
+  </div>
+  <script src="scripts/data.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
