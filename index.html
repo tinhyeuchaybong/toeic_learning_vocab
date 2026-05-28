@@ -56,15 +56,33 @@
         </svg>
       </div>
 
-      <!-- Word of the Day Card -->
-      <article class="word-card" id="word-card" aria-label="Word of the Day">
-        <span class="word-card__badge">Vocabulary</span>
-        <h2 class="word-card__word" id="card-word"></h2>
-        <p class="word-card__ipa" id="card-ipa"></p>
-        <span class="word-card__type" id="card-type"></span>
-        <p class="word-card__meaning" id="card-meaning"></p>
-        <button class="btn-quiz" id="btn-quiz" type="button">Start Quiz</button>
-      </article>
+      <!-- Progress Bar -->
+      <div class="progress-bar" id="progress-bar" aria-label="Tiến độ học từ vựng">
+        <div class="progress-bar__track">
+          <div class="progress-bar__fill" id="progress-bar-fill"></div>
+        </div>
+        <span class="progress-bar__label" id="progress-bar-label">0 / 1000 từ đã học</span>
+      </div>
+
+      <!-- Word of the Day Card / 3D Flashcard -->
+      <div class="flashcard" id="word-card" aria-label="Word of the Day">
+        <div class="flashcard__inner" id="flashcard-inner">
+          <!-- Front face: vocabulary badge, word, IPA, speaker -->
+          <article class="flashcard__front word-card">
+            <span class="word-card__badge">Vocabulary</span>
+            <h2 class="word-card__word" id="card-word"></h2>
+            <p class="word-card__ipa" id="card-ipa"></p>
+            <button class="btn-speak" id="btn-speak" type="button" aria-label="Phát âm">🔊</button>
+            <button class="btn-quiz" id="btn-quiz" type="button">Start Quiz</button>
+            <p class="quiz-unlock-hint" id="quiz-unlock-hint"></p>
+          </article>
+          <!-- Back face: Vietnamese meaning, word type -->
+          <article class="flashcard__back word-card">
+            <p class="word-card__meaning" id="card-meaning"></p>
+            <span class="word-card__type" id="card-type"></span>
+          </article>
+        </div>
+      </div>
 
       <!-- Vocabulary List View -->
       <section class="vocab-section" id="vocab-section" aria-label="Vocabulary List">
@@ -72,11 +90,31 @@
         <div class="vocab-list" id="vocab-list"></div>
       </section>
 
-      <!-- Quiz Placeholder View (hidden by default) -->
+      <!-- Quiz View (hidden by default) -->
       <div class="quiz-view" id="quiz-view" hidden>
-        <h2 class="quiz-view__title" id="quiz-view-title"></h2>
-        <p class="quiz-view__subtitle" id="quiz-view-subtitle"></p>
-        <button class="btn-quiz" id="btn-back-quiz" type="button">← Quay lại</button>
+        <div class="quiz-card">
+          <!-- Entry screen: shown before quiz starts -->
+          <div class="quiz-entry" id="quiz-entry">
+            <p class="quiz-entry__title" id="quiz-entry-title">Kiểm tra từ vựng 📝</p>
+            <p class="quiz-entry__subtitle" id="quiz-entry-subtitle"></p>
+            <button class="btn-quiz quiz-entry__btn" id="btn-start-quiz" type="button">Bắt đầu kiểm tra →</button>
+          </div>
+          <!-- Question screen: shown during quiz -->
+          <div id="quiz-question" hidden>
+            <div class="quiz-card__header">
+              <span class="quiz-score" id="quiz-score">✅ 0 / 0</span>
+              <span id="quiz-streak-badge"></span>
+              <span class="quiz-topic-label" id="quiz-topic-label"></span>
+            </div>
+            <h2 class="quiz-word" id="quiz-word"></h2>
+            <p class="quiz-ipa" id="quiz-ipa"></p>
+            <div class="quiz-choices" id="quiz-choices"></div>
+            <div class="quiz-card__actions">
+              <button class="btn-quiz btn-next-question" id="btn-next-question" type="button" hidden>Câu tiếp theo →</button>
+              <button class="btn-quiz btn-back-quiz" id="btn-back-quiz" type="button">← Quay lại</button>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>

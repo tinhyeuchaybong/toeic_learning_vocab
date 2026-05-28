@@ -38,6 +38,106 @@
 }
 
 /* =============================================
+   Progress Bar
+   ============================================= */
+.progress-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-bottom: var(--space-md);
+  background: var(--color-bg);
+  padding: var(--space-xs) 0;
+}
+
+.progress-bar__label {
+  display: block;
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent);
+  text-align: right;
+  margin-bottom: 4px;
+}
+
+.progress-bar__track {
+  height: 8px;
+  background: rgba(255, 183, 197, 0.3);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  width: 0%;
+  background: var(--color-progress-fill);
+  border-radius: var(--radius-sm);
+  transition: width 0.4s ease;
+}
+
+/* =============================================
+   3D Flashcard
+   ============================================= */
+.flashcard {
+  perspective: 1000px;
+  cursor: pointer;
+  max-width: 560px;
+  margin: 0 auto var(--space-xl);
+  /* height must be explicit so absolute children have a reference */
+  min-height: 320px;
+}
+
+.flashcard__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+}
+
+.flashcard__inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard__front,
+.flashcard__back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 320px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flashcard__back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Speaker button */
+.btn-speak {
+  background: transparent;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+  transition: background 0.2s ease;
+}
+
+.btn-speak:hover {
+  background: var(--color-accent-hover);
+}
+
+/* =============================================
    Word of the Day Card — Glassmorphism
    ============================================= */
 .word-card {
@@ -53,6 +153,9 @@
   background: var(--color-glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+
+  /* Page-load fade-in (Requirement 8.1) */
+  animation: fadeIn 0.4s ease forwards;
 }
 
 /* Fallback for browsers without backdrop-filter */
@@ -140,6 +243,15 @@
   cursor: not-allowed;
 }
 
+/* Quiz unlock hint — shown below Start Quiz button when topic not complete */
+.quiz-unlock-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-accent);
+  margin-top: var(--space-xs);
+  text-align: center;
+  min-height: 1.4em;
+}
+
 /* =============================================
    Floating Decorative Icons
    ============================================= */
@@ -191,6 +303,9 @@
 .vocab-section {
   max-width: 800px;
   margin: 0 auto;
+
+  /* Page-load fade-in (Requirement 8.1) */
+  animation: fadeIn 0.4s ease forwards;
 }
 
 .vocab-section__title {
@@ -208,17 +323,31 @@
 
 .vocab-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 80px 2fr;
+  grid-template-columns: 40px 1fr 1fr 80px 2fr 32px;
   gap: var(--space-sm);
   align-items: center;
   background: var(--color-vocab-row);
   border-radius: var(--radius-md);
   padding: var(--space-sm) var(--space-md);
   font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.vocab-row:hover {
+  background: rgba(183, 110, 121, 0.2);
+  transform: translateX(2px);
+}
+
+.vocab-row__index {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-accent);
+  text-align: center;
 }
 
 .vocab-row:nth-child(even) {
-  background: rgba(255, 209, 220, 0.2);
+  background: rgba(255, 183, 197, 0.2);
 }
 
 .vocab-row__word {
@@ -248,11 +377,14 @@
 }
 
 /* =============================================
-   Quiz Placeholder
+   Quiz View
    ============================================= */
 .quiz-view {
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
+}
+
+.quiz-card {
   padding: var(--space-xl);
   border-radius: var(--radius-xl);
   background: var(--color-glass-bg);
@@ -263,20 +395,111 @@
   text-align: center;
 }
 
-.quiz-view__title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-sm);
+.quiz-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
 }
 
-.quiz-view__subtitle {
+.quiz-score {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-secondary);
+}
+
+.quiz-topic-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: #ffffff;
+  background: var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 3px var(--space-xs);
+}
+
+.quiz-word {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.quiz-ipa {
+  font-family: monospace, var(--font-family);
+  font-size: var(--font-size-md);
+  color: var(--color-accent);
   margin-bottom: var(--space-lg);
 }
 
-.quiz-view .btn-quiz {
-  margin-top: var(--space-sm);
+/* 2×2 answer grid */
+.quiz-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.quiz-answer-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(183, 110, 121, 0.3);
+  border-radius: var(--radius-md);
+  padding: 14px var(--space-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.quiz-answer-btn:hover:not(:disabled) {
+  background: rgba(255, 183, 197, 0.4);
+}
+
+/* Click haptic: scale down then back */
+.quiz-answer-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* Correct answer — Mint Green glow */
+.quiz-answer-btn.answer--correct {
+  background: rgba(168, 230, 207, 0.5);
+  border: 2px solid var(--color-correct);
+  box-shadow: 0 0 20px rgba(168, 230, 207, 0.8);
+}
+
+/* Incorrect answer — Soft Coral + shake */
+.quiz-answer-btn.answer--incorrect {
+  background: rgba(255, 139, 148, 0.4);
+  border: 2px solid var(--color-incorrect);
+  animation: shake 0.4s ease;
+}
+
+.quiz-card__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.btn-next-question {
+  width: 100%;
+  max-width: 280px;
+}
+
+.btn-back-quiz {
+  background: transparent;
+  color: var(--color-accent);
+  border: 1.5px solid var(--color-accent);
+  box-shadow: none;
+}
+
+.btn-back-quiz:hover {
+  background: var(--color-accent-hover);
+  box-shadow: none;
+  transform: none;
 }
 
 /* =============================================
@@ -288,3 +511,82 @@
   font-size: var(--font-size-md);
   padding: var(--space-xl);
 }
+
+/* =============================================
+   Quiz Entry Screen
+   ============================================= */
+.quiz-entry {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.quiz-entry__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.quiz-entry__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.quiz-entry__btn {
+  font-size: var(--font-size-md);
+  padding: 16px 56px;
+  border-radius: var(--radius-xl);
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* =============================================
+   Streak Badge
+   ============================================= */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
+  background: rgba(255, 183, 197, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  animation: scaleIn 0.25s ease-out forwards;
+}
+
+/* =============================================
+   Floating Heart Particles
+   ============================================= */
+.heart-particle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 24px;
+  z-index: 9999;
+  animation: heartFloat 0.9s ease-out forwards;
+  user-select: none;
+}
+
+/* =============================================
+   Vocab row speak button
+   ============================================= */
+.vocab-row__speak {
+  background: transparent;
+  border: 1px solid rgba(183, 110, 121, 0.4);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.vocab-row__speak:hover {
+  background: var(--color-accent-hover);
+}
+
