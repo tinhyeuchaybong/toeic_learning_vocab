@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m http.server 5500)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:5500/index.html)",
+      "PowerShell(Start-Process \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=1280,860 --screenshot=\"d:\\\\Apptoeic\\\\_p.png\" \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=414,820 --screenshot=\"d:\\\\Apptoeic\\\\_m.png\" \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=414,400 --screenshot=\"d:\\\\Apptoeic\\\\_m2.png\" \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=414,300 --screenshot=\"d:\\\\Apptoeic\\\\_m3.png\" \"http://localhost:5500/index.html\")",
+      "Bash(cat)",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --window-size=414,800 --virtual-time-budget=2500 --run-all-compositor-stages-before-draw --dump-dom \"http://localhost:5500/index.html\")",
+      "Read(//tmp/**)",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=414,300 --screenshot=\"d:\\\\Apptoeic\\\\_m4.png\" \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=414,300 --virtual-time-budget=1200 --screenshot=\"d:\\\\Apptoeic\\\\_dbg.png\" \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=412,320 --screenshot=\"d:\\\\Apptoeic\\\\_dbg2.png\" \"http://localhost:5500/index.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --hide-scrollbars --window-size=900,300 --virtual-time-budget=1200 --screenshot=\"d:\\\\Apptoeic\\\\_dbg3.png\" \"http://localhost:5500/index.html\")"
+    ]
+  }
+}

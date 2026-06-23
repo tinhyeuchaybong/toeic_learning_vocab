@@ -54,16 +54,14 @@ function updateQuizUnlockState(topicId) {
   const total = topic.words.length;
   const complete = isTopicComplete(topic);
 
-  if (complete) {
-    btn.classList.remove('disabled');
-    btn.disabled = false;
-    btn.title = '';
-    if (hint) hint.textContent = '';
-  } else {
-    btn.classList.add('disabled');
-    btn.disabled = true;
-    btn.title = 'Hãy xem hết tất cả từ vựng trước khi làm bài kiểm tra.';
-    if (hint) hint.textContent = `Đã xem ${viewedCount} / ${total} từ — hãy xem hết để mở khoá bài kiểm tra`;
+  // Quiz luôn bấm được — chỉ hiển thị gợi ý tiến độ học để khích lệ
+  btn.classList.remove('disabled');
+  btn.disabled = false;
+  btn.title = '';
+  if (hint) {
+    hint.textContent = complete
+      ? '✨ Đã xem hết — sẵn sàng kiểm tra!'
+      : `Đã xem ${viewedCount} / ${total} từ trong chủ đề này`;
   }
 }
 // Mark a word as studied by its global index
@@ -84,8 +82,9 @@ function renderProgressBar() {
   const label = document.getElementById('progress-bar-label');
   if (!fill || !label) return;
   const count = state.studied.size;
-  fill.style.width = `${(count / 1000) * 100}%`;
-  label.textContent = `${count} / 1000 từ đã học`;
+  const total = ALL_WORDS.length;
+  fill.style.width = `${(count / total) * 100}%`;
+  label.textContent = `👑 ${count} / ${total} từ đã chinh phục`;
 }
 
 // Speak a word using Web Speech API
@@ -139,29 +138,65 @@ function generateQuestion() {
   state.answered = false;
 }
 
-// Render sidebar with topic list and active state
-function renderSidebar() {
-  const sidebar = document.getElementById('sidebar');
+// Render the navbar topic dropdown, grouped by TOEIC / Đời sống
+function renderNavbar() {
+  const menu = document.getElementById('dropdown-menu');
+  menu.innerHTML = '';
 
-  const titleEl = document.createElement('div');
-  titleEl.className = 'sidebar-title';
-  titleEl.textContent = 'Học tiếng Anh 🌸';
-
-  const list = document.createElement('ul');
-  list.className = 'topic-list';
-  list.id = 'topic-list';
-
-  TOPICS.forEach(topic => {
-    const li = document.createElement('li');
-    li.className = 'topic-item' + (topic.id === state.selectedTopicId ? ' active' : '');
-    li.dataset.topicId = topic.id;
-    li.textContent = `${topic.id}. ${topic.name}`;
-    li.addEventListener('click', () => selectTopic(topic.id));
-    list.appendChild(li);
+  // Preserve group order as first seen in TOPICS
+  const groups = [];
+  TOPICS.forEach(t => {
+    if (!groups.includes(t.group)) groups.push(t.group);
   });
 
-  sidebar.appendChild(titleEl);
-  sidebar.appendChild(list);
+  const groupIcon = { 'TOEIC': '📊', 'Đời sống': '🌸' };
+
+  groups.forEach(group => {
+    const label = document.createElement('span');
+    label.className = 'dropdown__group-label';
+    label.textContent = `${groupIcon[group] || ''} ${group}`.trim();
+    menu.appendChild(label);
+
+    TOPICS.filter(t => t.group === group).forEach(topic => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'topic-item' + (topic.id === state.selectedTopicId ? ' active' : '');
+      item.setAttribute('role', 'menuitem');
+      item.dataset.topicId = topic.id;
+      item.textContent = `${topic.id}. ${topic.name}`;
+      item.addEventListener('click', () => {
+        selectTopic(topic.id);
+        closeDropdown();
+      });
+      menu.appendChild(item);
+    });
+  });
+
+  updateDropdownLabel();
+}
+
+// Update the dropdown toggle label to show the current topic
+function updateDropdownLabel() {
+  const current = document.getElementById('dropdown-current');
+  const topic = TOPICS.find(t => t.id === state.selectedTopicId);
+  if (current && topic) current.textContent = `${topic.id}. ${topic.name}`;
+}
+
+// Open / close the topic dropdown
+function openDropdown() {
+  document.getElementById('dropdown-menu').hidden = false;
+  document.getElementById('dropdown-toggle').setAttribute('aria-expanded', 'true');
+}
+
+function closeDropdown() {
+  document.getElementById('dropdown-menu').hidden = true;
+  document.getElementById('dropdown-toggle').setAttribute('aria-expanded', 'false');
+}
+
+function toggleDropdown() {
+  const isOpen = !document.getElementById('dropdown-menu').hidden;
+  if (isOpen) closeDropdown();
+  else openDropdown();
 }
 
 // Render the Word of the Day card for a given topic
@@ -183,23 +218,14 @@ function renderWordCard(topic, wordObj) {
 
   document.getElementById('card-word').textContent = word.word;
   document.getElementById('card-ipa').textContent = word.ipa;
-  document.getElementById('card-type').textContent = word.type;
+  // Hiển thị từ loại đầy đủ bằng tiếng Việt trên mặt sau thẻ
+  document.getElementById('card-type').textContent = TYPE_LABELS[word.type] || word.type;
   document.getElementById('card-meaning').textContent = word.meaning;
 
   // Mark as studied globally and viewed within topic
   if (word.index !== undefined) {
     markStudied(word.index);
     markTopicWordViewed(topic.id, word.index);
-  }
-}
-
-// Close sidebar when a topic is selected on mobile
-function closeMobileSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const btn = document.getElementById('hamburger-btn');
-  if (sidebar && window.innerWidth <= 768) {
-    sidebar.classList.remove('sidebar--open');
-    if (btn) btn.setAttribute('aria-expanded', 'false');
   }
 }
 
@@ -210,13 +236,12 @@ function selectTopic(topicId) {
   // Exit quiz if active when switching topics
   if (state.quizActive) exitQuiz();
 
-  // Close mobile sidebar after selection
-  closeMobileSidebar();
-
   document.querySelectorAll('.topic-item').forEach(item => {
     const isActive = Number(item.dataset.topicId) === topicId;
     item.classList.toggle('active', isActive);
   });
+
+  updateDropdownLabel();
 
   const topic = TOPICS.find(t => t.id === topicId);
   if (topic) {
@@ -247,7 +272,7 @@ function renderVocabList(topic) {
       <span class="vocab-row__index">${w.index}</span>
       <span class="vocab-row__word">${w.word}</span>
       <span class="vocab-row__ipa">${w.ipa}</span>
-      <span class="vocab-row__type">${w.type}</span>
+      <span class="vocab-row__type" title="${TYPE_LABELS[w.type] || w.type}">${w.type}</span>
       <span class="vocab-row__meaning">${w.meaning}</span>
       <button class="vocab-row__speak" type="button" aria-label="Phát âm ${w.word}" title="Phát âm">🔊</button>
     `;
@@ -284,8 +309,7 @@ function renderQuizEntry() {
   document.getElementById('quiz-entry').hidden = false;
   document.getElementById('quiz-question').hidden = true;
   document.getElementById('quiz-view').hidden = false;
-  document.getElementById('word-card').hidden = true;
-  document.getElementById('vocab-section').hidden = true;
+  document.getElementById('study-view').hidden = true;
 
   const quizCard = document.querySelector('.quiz-card');
   if (quizCard) {
@@ -324,8 +348,7 @@ function renderQuiz() {
   document.getElementById('quiz-entry').hidden = true;
   document.getElementById('quiz-question').hidden = false;
   document.getElementById('quiz-view').hidden = false;
-  document.getElementById('word-card').hidden = true;
-  document.getElementById('vocab-section').hidden = true;
+  document.getElementById('study-view').hidden = true;
 
   const quizCard = document.querySelector('.quiz-card');
   if (quizCard) {
@@ -379,8 +402,7 @@ function exitQuiz() {
   document.getElementById('quiz-view').hidden = true;
   document.getElementById('quiz-entry').hidden = false;
   document.getElementById('quiz-question').hidden = true;
-  document.getElementById('word-card').hidden = false;
-  document.getElementById('vocab-section').hidden = false;
+  document.getElementById('study-view').hidden = false;
 }
 
 // Quiz button click handler — show entry screen first
@@ -430,19 +452,27 @@ if (btnSpeak) {
   }
 }
 
-// Hamburger toggle for mobile sidebar
-const hamburgerBtn = document.getElementById('hamburger-btn');
-if (hamburgerBtn) {
-  hamburgerBtn.addEventListener('click', () => {
-    const sidebar = document.getElementById('sidebar');
-    const isOpen = sidebar.classList.toggle('sidebar--open');
-    hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+// Topic dropdown toggle
+const dropdownToggle = document.getElementById('dropdown-toggle');
+if (dropdownToggle) {
+  dropdownToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleDropdown();
   });
 }
 
+// Close dropdown on outside click or Escape
+document.addEventListener('click', (e) => {
+  const dropdown = document.getElementById('topic-dropdown');
+  if (dropdown && !dropdown.contains(e.target)) closeDropdown();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDropdown();
+});
+
 // Init
 initStudied();
-renderSidebar();
+renderNavbar();
 const defaultTopic = TOPICS.find(t => t.id === state.selectedTopicId);
 renderWordCard(defaultTopic);
 renderVocabList(defaultTopic);

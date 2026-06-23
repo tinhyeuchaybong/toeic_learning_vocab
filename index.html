@@ -3,56 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Học tiếng Anh cho em bé 22 tuổi</title>
+  <title>Lâu đài tiếng Anh của Công chúa 👑</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/components.css" />
 </head>
 <body>
   <div class="dashboard">
-    <!-- Mobile top bar (visible only on small screens) -->
-    <div class="mobile-topbar" id="mobile-topbar">
-      <span class="mobile-topbar__title">Học tiếng Anh 🌸</span>
-      <button class="hamburger" id="hamburger-btn" aria-label="Mở danh sách chủ đề" aria-expanded="false" aria-controls="sidebar">
-        <span class="hamburger__line"></span>
-        <span class="hamburger__line"></span>
-        <span class="hamburger__line"></span>
-      </button>
-    </div>
-    <aside class="sidebar" id="sidebar"></aside>
+    <!-- Horizontal top navbar -->
+    <header class="navbar" id="navbar">
+      <span class="navbar__brand">👑 Lâu đài tiếng Anh</span>
+
+      <!-- Topic dropdown (xổ xuống danh sách chủ đề) -->
+      <div class="dropdown" id="topic-dropdown">
+        <button class="dropdown__toggle" id="dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-menu">
+          <span class="dropdown__current" id="dropdown-current">Chọn chủ đề</span>
+          <span class="dropdown__caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="dropdown__menu" id="dropdown-menu" role="menu" hidden></div>
+      </div>
+
+      <!-- Quiz button lives on the navbar now -->
+      <div class="navbar__actions">
+        <button class="btn-quiz navbar__quiz" id="btn-quiz" type="button">📝 Làm Quiz</button>
+      </div>
+    </header>
+
     <main class="main-content" id="main-content">
       <!-- Floating Decorative Icons -->
       <div class="floating-icons" aria-hidden="true">
-        <!-- Open Book -->
-        <svg class="floating-icon floating-icon--book-open" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M40 16C40 16 24 10 10 14V62C24 58 40 64 40 64C40 64 56 58 70 62V14C56 10 40 16 40 16Z" fill="#FFD1DC" stroke="#B76E79" stroke-width="2.5" stroke-linejoin="round"/>
-          <line x1="40" y1="16" x2="40" y2="64" stroke="#B76E79" stroke-width="2.5"/>
-          <line x1="18" y1="24" x2="36" y2="22" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="18" y1="32" x2="36" y2="30" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="18" y1="40" x2="36" y2="38" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="44" y1="22" x2="62" y2="24" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="44" y1="30" x2="62" y2="32" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="44" y1="38" x2="62" y2="40" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Crown -->
+        <svg class="floating-icon floating-icon--crown" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 56L16 26L30 40L40 20L50 40L64 26L68 56H12Z" fill="#F5DFA0" stroke="#D9A441" stroke-width="2.5" stroke-linejoin="round"/>
+          <rect x="12" y="56" width="56" height="8" rx="3" fill="#D9A441"/>
+          <circle cx="16" cy="24" r="4" fill="#C13D86"/>
+          <circle cx="40" cy="17" r="4" fill="#C13D86"/>
+          <circle cx="64" cy="24" r="4" fill="#C13D86"/>
+          <circle cx="28" cy="52" r="2.5" fill="#C13D86"/>
+          <circle cx="40" cy="52" r="2.5" fill="#C13D86"/>
+          <circle cx="52" cy="52" r="2.5" fill="#C13D86"/>
         </svg>
 
-        <!-- Pencil -->
-        <svg class="floating-icon floating-icon--pencil" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="22" y="8" width="16" height="38" rx="4" fill="#FFD1DC" stroke="#B76E79" stroke-width="2"/>
-          <polygon points="22,46 38,46 30,58" fill="#B76E79"/>
-          <rect x="22" y="8" width="16" height="10" rx="4" fill="#B76E79"/>
-          <line x1="30" y1="18" x2="30" y2="44" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+        <!-- Heart -->
+        <svg class="floating-icon floating-icon--heart" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 52C30 52 8 38 8 22C8 14 14 9 21 9C26 9 29 12 30 15C31 12 34 9 39 9C46 9 52 14 52 22C52 38 30 52 30 52Z" fill="#FFC2DD" stroke="#C13D86" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M18 20C18 16 21 14 24 14" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
         </svg>
 
-        <!-- Closed Book -->
-        <svg class="floating-icon floating-icon--book-closed" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="14" y="10" width="38" height="50" rx="5" fill="#FFD1DC" stroke="#B76E79" stroke-width="2.5"/>
-          <rect x="14" y="10" width="8" height="50" rx="4" fill="#B76E79"/>
-          <line x1="26" y1="22" x2="48" y2="22" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="26" y1="30" x2="48" y2="30" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="26" y1="38" x2="40" y2="38" stroke="#B76E79" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M32 52 Q35 48 38 52" stroke="#B76E79" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- Sparkle -->
+        <svg class="floating-icon floating-icon--sparkle" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 6C32 20 40 28 54 30C40 32 32 40 30 54C28 40 20 32 6 30C20 28 28 20 30 6Z" fill="#F5DFA0" stroke="#D9A441" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="30" cy="30" r="3" fill="#C13D86"/>
         </svg>
       </div>
 
@@ -61,34 +64,39 @@
         <div class="progress-bar__track">
           <div class="progress-bar__fill" id="progress-bar-fill"></div>
         </div>
-        <span class="progress-bar__label" id="progress-bar-label">0 / 1000 từ đã học</span>
+        <span class="progress-bar__label" id="progress-bar-label">👑 0 từ đã chinh phục</span>
       </div>
 
-      <!-- Word of the Day Card / 3D Flashcard -->
-      <div class="flashcard" id="word-card" aria-label="Word of the Day">
-        <div class="flashcard__inner" id="flashcard-inner">
-          <!-- Front face: vocabulary badge, word, IPA, speaker -->
-          <article class="flashcard__front word-card">
-            <span class="word-card__badge">Vocabulary</span>
-            <h2 class="word-card__word" id="card-word"></h2>
-            <p class="word-card__ipa" id="card-ipa"></p>
-            <button class="btn-speak" id="btn-speak" type="button" aria-label="Phát âm">🔊</button>
-            <button class="btn-quiz" id="btn-quiz" type="button">Start Quiz</button>
-            <p class="quiz-unlock-hint" id="quiz-unlock-hint"></p>
-          </article>
-          <!-- Back face: Vietnamese meaning, word type -->
-          <article class="flashcard__back word-card">
-            <p class="word-card__meaning" id="card-meaning"></p>
-            <span class="word-card__type" id="card-type"></span>
-          </article>
-        </div>
-      </div>
+      <!-- Study view: vocabulary list (top/left) + featured flashcard (right) -->
+      <div class="content-grid" id="study-view">
+        <!-- Vocabulary List — đẩy lên trên, là trọng tâm học -->
+        <section class="vocab-section" id="vocab-section" aria-label="Vocabulary List">
+          <h2 class="vocab-section__title" id="vocab-section-title"></h2>
+          <div class="vocab-list" id="vocab-list"></div>
+        </section>
 
-      <!-- Vocabulary List View -->
-      <section class="vocab-section" id="vocab-section" aria-label="Vocabulary List">
-        <h2 class="vocab-section__title" id="vocab-section-title"></h2>
-        <div class="vocab-list" id="vocab-list"></div>
-      </section>
+        <!-- Featured word — 3D Flashcard, sticky bên phải -->
+        <aside class="flashcard-rail">
+          <p class="quiz-unlock-hint" id="quiz-unlock-hint"></p>
+          <div class="flashcard" id="word-card" aria-label="Word of the Day">
+            <div class="flashcard__inner" id="flashcard-inner">
+              <!-- Front face: vocabulary badge, word, IPA, speaker -->
+              <article class="flashcard__front word-card">
+                <span class="word-card__badge">✦ Từ của Công chúa ✦</span>
+                <h2 class="word-card__word" id="card-word"></h2>
+                <p class="word-card__ipa" id="card-ipa"></p>
+                <button class="btn-speak" id="btn-speak" type="button" aria-label="Phát âm">🔊</button>
+                <p class="flashcard__flip-hint">Chạm để lật xem nghĩa ✨</p>
+              </article>
+              <!-- Back face: Vietnamese meaning, word type -->
+              <article class="flashcard__back word-card">
+                <span class="word-card__type" id="card-type"></span>
+                <p class="word-card__meaning" id="card-meaning"></p>
+              </article>
+            </div>
+          </div>
+        </aside>
+      </div>
 
       <!-- Quiz View (hidden by default) -->
       <div class="quiz-view" id="quiz-view" hidden>

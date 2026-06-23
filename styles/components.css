@@ -5,11 +5,14 @@
 
 /* Sidebar Header */
 .sidebar-title {
-  font-size: var(--font-size-md);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--color-accent);
+  color: var(--color-accent-deep);
   margin-bottom: var(--space-md);
-  line-height: 1.4;
+  line-height: 1.3;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1.5px solid var(--color-gold-soft);
 }
 
 /* Topic List */
@@ -19,13 +22,16 @@
 
 .topic-item {
   padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-gold-soft);
   border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-primary);
-  transition: background 0.2s ease;
-  margin-bottom: 4px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
 }
 
 .topic-item:hover {
@@ -35,17 +41,16 @@
 .topic-item.active {
   background: var(--color-accent);
   color: #ffffff;
+  box-shadow: 0 4px 14px var(--color-accent-glow);
+  /* dải vàng kim bên trái như dấu triện hoàng gia */
+  border-left: 3px solid var(--color-gold);
 }
 
 /* =============================================
    Progress Bar
    ============================================= */
 .progress-bar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  margin-bottom: var(--space-md);
-  background: var(--color-bg);
+  margin-bottom: var(--space-lg);
   padding: var(--space-xs) 0;
 }
 
@@ -79,8 +84,9 @@
 .flashcard {
   perspective: 1000px;
   cursor: pointer;
+  width: 100%;
   max-width: 560px;
-  margin: 0 auto var(--space-xl);
+  margin: 0 auto;
   /* height must be explicit so absolute children have a reference */
   min-height: 320px;
 }
@@ -129,7 +135,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-md);
+  margin: 0 auto var(--space-md);
   transition: background 0.2s ease;
 }
 
@@ -142,12 +148,17 @@
    ============================================= */
 .word-card {
   position: relative;
+  width: 100%;
   max-width: 560px;
-  margin: 0 auto var(--space-xl);
-  padding: var(--space-xl);
+  margin: 0 auto;
+  padding: var(--space-lg);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--color-glass-border);
-  box-shadow: 0 8px 32px var(--color-accent-shadow);
+  /* Khung vàng kim đôi — chi tiết signature hoàng gia */
+  border: 1.5px solid var(--color-gold);
+  box-shadow: 0 8px 32px var(--color-accent-shadow),
+              inset 0 0 0 5px rgba(255, 255, 255, 0.45),
+              inset 0 0 0 6px var(--color-gold-soft);
+  text-align: center;
 
   /* Glassmorphism */
   background: var(--color-glass-bg);
@@ -156,6 +167,26 @@
 
   /* Page-load fade-in (Requirement 8.1) */
   animation: fadeIn 0.4s ease forwards;
+}
+
+/* Hoa văn vàng kim ở góc trên thẻ — dấu ấn cổ tích */
+.flashcard__front.word-card::before {
+  content: '✦';
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  font-size: 14px;
+  color: var(--color-gold);
+  opacity: 0.85;
+}
+.flashcard__front.word-card::after {
+  content: '✦';
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 14px;
+  color: var(--color-gold);
+  opacity: 0.85;
 }
 
 /* Fallback for browsers without backdrop-filter */
@@ -169,21 +200,23 @@
   display: inline-block;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-accent);
-  background: var(--color-surface);
+  color: var(--color-accent-deep);
+  background: linear-gradient(90deg, var(--color-gold-soft), #FFF1CF);
+  border: 1px solid var(--color-gold);
   border-radius: var(--radius-sm);
-  padding: 4px var(--space-xs);
+  padding: 4px var(--space-sm);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   margin-bottom: var(--space-sm);
 }
 
 .word-card__word {
+  font-family: var(--font-display);
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
   margin-bottom: var(--space-xs);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .word-card__ipa {
@@ -205,11 +238,13 @@
 }
 
 .word-card__meaning {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-xl);
-  line-height: 1.5;
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  font-style: italic;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+  line-height: 1.4;
 }
 
 /* =============================================
@@ -273,27 +308,27 @@
   animation-iteration-count: infinite;
 }
 
-.floating-icon--book-open {
-  top: 60px;
+.floating-icon--crown {
+  top: 56px;
   right: 80px;
-  width: 80px;
-  animation-name: float-book-open;
+  width: 76px;
+  animation-name: float-crown;
   animation-delay: 0s;
 }
 
-.floating-icon--pencil {
+.floating-icon--heart {
   bottom: 120px;
   left: 60px;
-  width: 60px;
-  animation-name: float-pencil;
+  width: 54px;
+  animation-name: float-heart;
   animation-delay: 1.2s;
 }
 
-.floating-icon--book-closed {
-  top: 100px;
+.floating-icon--sparkle {
+  top: 110px;
   left: 100px;
-  width: 70px;
-  animation-name: float-book-closed;
+  width: 56px;
+  animation-name: float-sparkle;
   animation-delay: 0.6s;
 }
 
@@ -301,18 +336,20 @@
    Vocabulary List
    ============================================= */
 .vocab-section {
-  max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
 
   /* Page-load fade-in (Requirement 8.1) */
   animation: fadeIn 0.4s ease forwards;
 }
 
 .vocab-section__title {
+  font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
   margin-bottom: var(--space-md);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1.5px solid var(--color-gold-soft);
 }
 
 .vocab-list {
@@ -418,6 +455,7 @@
 }
 
 .quiz-word {
+  font-family: var(--font-display);
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
@@ -521,6 +559,7 @@
 }
 
 .quiz-entry__title {
+  font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
